@@ -7,7 +7,7 @@ PG_DRIVER = "pgsql"
 CONFIG_FILE_MOUNT_DIRPATH = "/config"
 SEED_FILE_MOUNT_PATH = "/docker-entrypoint-initdb.d"
 DATA_DIRECTORY_PATH = "/data/"
-DATA_DIRECTORY_ALLOCATION_SIZE = "4096" # 4Gi in Mi
+DATA_DIRECTORY_ALLOCATION_SIZE = 4096 # 4Gi in Mi
 
 CONFIG_FILENAME = "postgresql.conf"  # Expected to be in the artifact
 
