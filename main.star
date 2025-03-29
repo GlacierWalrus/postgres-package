@@ -7,6 +7,7 @@ PG_DRIVER = "pgsql"
 CONFIG_FILE_MOUNT_DIRPATH = "/config"
 SEED_FILE_MOUNT_PATH = "/docker-entrypoint-initdb.d"
 DATA_DIRECTORY_PATH = "/data/"
+DATA_DIRECTORY_ALLOCATION_SIZE = "4096" # 4Gi in Mi
 
 CONFIG_FILENAME = "postgresql.conf"  # Expected to be in the artifact
 
@@ -33,6 +34,7 @@ def run(
     min_memory=POSTGRES_MIN_MEMORY,
     max_memory=POSTGRES_MAX_MEMORY,
     node_selectors=None,
+    data_directory_allocation_size=DATA_DIRECTORY_ALLOCATION_SIZE
 ):
     """Launches a Postgresql database instance, optionally seeding it with a SQL file script
 
@@ -54,6 +56,7 @@ def run(
         min_memory (int): Define how much MB of memory the service should be assigned at least.
         max_memory (int): Define how much MB of memory the service should be assigned max.
         node_selectors (dict[string, string]): Define a dict of node selectors - only works in kubernetes example: {"kubernetes.io/hostname": node-name-01}
+        data_directory_allocation_size in mebibytes
     Returns:
         An object containing useful information about the Postgres database running inside the enclave:
         ```
@@ -95,6 +98,7 @@ def run(
     if persistent:
         files[DATA_DIRECTORY_PATH] = Directory(
             persistent_key= "data-{0}".format(service_name),
+            size = data_directory_allocation_size
         )
         env_vars["PGDATA"] = DATA_DIRECTORY_PATH + "/pgdata"
     if node_selectors == None:
